@@ -58,7 +58,29 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
     * 1060000
     * 1070000
     * 1080000
-    * 1090000    
+    * 1090000 
+
+#### Tiempos de respuesta    
+* 1000000  
+![](images/answers/punto7.png)  
+* 1010000  
+![](images/answers/punto7-2.png)  
+* 1020000  
+![](images/answers/punto7-3.png)  
+* 1030000  
+![](images/answers/punto7-4.png)  
+* 1040000  
+![](images/answers/punto7-5.png)  
+* 1050000  
+![](images/answers/punto7-6.png)  
+* 1060000  
+![](images/answers/punto7-7.png)  
+* 1070000  
+![](images/answers/punto7-8.png)  
+* 1080000  
+![](images/answers/punto7-9.png)  
+* 1090000  
+![](images/answers/punto7-10.png)  
 
 8. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
 
@@ -80,24 +102,108 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 ![Imágen 3](images/part1/part1-vm-resize.png)
 
 11. Una vez el cambio se vea reflejado, repita el paso 7, 8 y 9.
-12. Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo.
+12. Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo.   
+    * El sistema es escalable y generalmente se comportó de manera más eficiente durante el incremento de workload puesto por postman.
 13. Vuelva a dejar la VM en el tamaño inicial para evitar cobros adicionales.
 
 **Preguntas**
 
-1. ¿Cuántos y cuáles recursos crea Azure junto con la VM?
-2. ¿Brevemente describa para qué sirve cada recurso?
-3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? ¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?
-4. Adjunte tabla de tiempos e interprete por qué la función tarda tando tiempo.
-5. Adjunte imágen del consumo de CPU de la VM e interprete por qué la función consume esa cantidad de CPU.
+1. ¿Cuántos y cuáles recursos crea Azure junto con la VM?  
+Los recursos que crea Azure junto a la máquina virtual son:  
+    * Resource Group
+    * Storage account
+    * Virtual Network
+    * Public IP address
+    * Network interface
+    * Data disks
+2. ¿Brevemente describa para qué sirve cada recurso?  
+
+* Resource group: Es una agrupación de recursos utilizados por una solución en Azure, son todos aquellos recursos     administrables agrupados, los recursos que se agrupan de esta manera se deciden teniendo en cuenta que es lo mas    
+conveniente para nuestra finalidad.  
+
+* Storage account: Cuenta que contiene todos los objetos de almacenamiento de Azure, como blobs, archivos, filas y tablas.  
+Esta cuenta provee un espacio que puede ser accedido desde cualquier parte a través de HTTP o HTTPS.  
+
+* Virtual network: Cumple la misma función que cumpliría una red común en un sistema, en este caso, la maquina virtual  
+de Azure trae su propia red integrada con sus propios beneficios de escalabilidad, disponibilidad y aislamiento.
+
+* Public IP address: Es una dirección IP publica que permite la comunicación de los recursos de Azure con el internet. Estas  
+son asignadas de manera dinámica y pueden ser cambiadas por el usuario.  
+
+* Data disk: Discos de almacenamiento similares a los discos físicos comúnmente conocidos pero virtualizados.
+
+
+
+3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? ¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?  
+
+Al cerrar la conexión SSH prácticamente estamos "cerrando la consola" que está ejecutando FibonacciApp.js por medio del  
+comando npm. Por otro lado el *"Inbound port rule"* debe ser creado para que la máquina virtual admita conexiones al  
+puerto por el cual la aplicación da las respuestas, en este caso, el puerto 3000.  
+
+
+4. Adjunte tabla de tiempos e interprete por qué la función tarda tando tiempo.  
+
+Tabla utilizando el tamaño B1|s 
+
+| Tiempo (seg)      | Número Fibonacci |
+| ----------- | ----------- |
+| 24,9      | 1000000       |
+| 26   | 1010000        |
+| 26,7      | 1020000       |
+| 27,5   | 1030000        |
+| 27,9      | 1040000       |
+| 26,2   | 1050000        |
+| 26,9      | 1060000       |
+| 27,4   | 1070000        |
+| 30,1      | 1080000       |
+| 31,2   | 1090000        |
+
+5. Adjunte imágen del consumo de CPU de la VM e interprete por qué la función consume esa cantidad de CPU.  
+
+Luego de revisar detenidamente la función que calcula los números fibonacci, se puede ver que esta hace uso de un ciclo  
+el cual se ve expuesto a una carga muy elevada de iteración para calcular un numero fibonacci grande.
+
+![](images/answers/punto5.png) 
+
 6. Adjunte la imagen del resumen de la ejecución de Postman. Interprete:
-    * Tiempos de ejecución de cada petición.
-    * Si hubo fallos documentelos y explique.
-7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?
-8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM?
-9. ¿Qué pasa con la infraestructura cuando cambia el tamaño de la VM? ¿Qué efectos negativos implica?
-10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?
-11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?
+    * Tiempos de ejecución de cada petición.  
+    Utilizando el tamaño B2ms de la máquina virtual
+    ![](images/answers/punto11.png) 
+    * Si hubo fallos documentelos y explique.  
+    
+7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?  
+
+La alternativa de máquina virtual con tamaño B2ms es considerablemente mejor que la de tamaño B1|s, esto no solo se aprecia  
+en la diferencia de memoria RAM, sino más importante aún, en el desempeño del procesador, el cual es el componente principal  
+a la hora hacer la cantidad de cálculos necesarios para llegar a un número fibonacci tan grande, la máquina virtual B2ms  
+tiene 2 procesadores virtuales, los cuales inicialmente tienen un desempeño base de 40% que llega a un desempeño máximo del  
+200%, mientras que la maquina B1|s solamente cuenta con un procesador virtual, el cual tiene un desempeño inicial del 5%  
+y alcanza un desempeño máximo del 100%.  
+
+
+8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM?  
+
+Aunque al aumentar el tamaño de la máquina virtual impacto positivamente al tiempo de respuesta de la aplicación, pienso  
+que desde un punto de vista más practico sería mucho mejor cambiar la implementación de cómo se calcula el numero fibonacci  
+teniendo en cuenta que existen maneras más optimas de obtener dichos números, como por ejemplo por medio de la formula  
+o la programación dinámica.  
+Por otro lado, cuando cambiamos el tamaño de la máquina virtual, todo el sistema cuenta con más poder de procesamiento  
+por lo cual el programa itera mucho más rápido el ciclo principal que calcula el numero fibonacci.  
+
+9. ¿Qué pasa con la infraestructura cuando cambia el tamaño de la VM? ¿Qué efectos negativos implica?  
+
+Cambiar abruptamente el tamaño de la máquina virtual va a implicar una interrupción en el servicio de cálculo de números  
+fibonacci, lo cual disminuye el "uptime" de la infraestructura.  
+
+10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?  
+
+Si se pudo apreciar una mejora del uso del CPU, porque el tamaño B1|s tiene que dedicar muchos más recursos para realizar  
+el cálculo de los números fibonacci, contrario a la máquina de tamaño B2ms que consume muchos menos recursos para hacer  
+lo mismo en un tiempo menor.  
+
+11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?  
+
+
 
 ### Parte 2 - Escalabilidad horizontal
 
