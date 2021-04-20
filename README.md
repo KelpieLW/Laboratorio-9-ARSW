@@ -163,12 +163,12 @@ Tabla utilizando el tamaño B1|s
 Luego de revisar detenidamente la función que calcula los números fibonacci, se puede ver que esta hace uso de un ciclo  
 el cual se ve expuesto a una carga muy elevada de iteración para calcular un numero fibonacci grande.
 
-![](images/answers/punto5.png) 
+![](images/answers/punto5.PNG) 
 
 6. Adjunte la imagen del resumen de la ejecución de Postman. Interprete:
     * Tiempos de ejecución de cada petición.  
     Utilizando el tamaño B2ms de la máquina virtual
-    ![](images/answers/punto11.png) 
+    ![](images/answers/punto11.PNG) 
     * Si hubo fallos documentelos y explique.  
     
 7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?  
@@ -282,7 +282,7 @@ http://52.155.223.248/fibonacci/1
 
 Prueba con newman:  
 
-![ScreenShot](images/answers/Punto2.png)
+![ScreenShot](images/answers/Punto2.PNG)
 
 Como se puede apreciar en la imagen, el tiempo de duración de la prueba fue considerablemente mayor al resultado visto  
 en la prueba hecha con la máquina virtual B2ms, viendo que esta última duro 2 minutos con 35.5 segundos y la prueba hecha con  
