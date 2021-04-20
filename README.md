@@ -62,25 +62,25 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 #### Tiempos de respuesta    
 * 1000000  
-![](images/answers/punto7.png)  
+![](images/answers/punto7.PNG)  
 * 1010000  
-![](images/answers/punto7-2.png)  
+![](images/answers/punto7-2.PNG)  
 * 1020000  
-![](images/answers/punto7-3.png)  
+![](images/answers/punto7-3.PNG)  
 * 1030000  
-![](images/answers/punto7-4.png)  
+![](images/answers/punto7-4.PNG)  
 * 1040000  
-![](images/answers/punto7-5.png)  
+![](images/answers/punto7-5.PNG)  
 * 1050000  
-![](images/answers/punto7-6.png)  
+![](images/answers/punto7-6.PNG)  
 * 1060000  
-![](images/answers/punto7-7.png)  
+![](images/answers/punto7-7.PNG)  
 * 1070000  
-![](images/answers/punto7-8.png)  
+![](images/answers/punto7-8.PNG)  
 * 1080000  
-![](images/answers/punto7-9.png)  
+![](images/answers/punto7-9.PNG)  
 * 1090000  
-![](images/answers/punto7-10.png)  
+![](images/answers/punto7-10.PNG)  
 
 8. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
 
@@ -278,9 +278,19 @@ http://52.155.223.248/
 http://52.155.223.248/fibonacci/1
 ```
 
-2. Realice las pruebas de carga con `newman` que se realizaron en la parte 1 y haga un informe comparativo donde contraste: tiempos de respuesta, cantidad de peticiones respondidas con éxito, costos de las 2 infraestrucruras, es decir, la que desarrollamos con balanceo de carga horizontal y la que se hizo con una maquina virtual escalada.
+2. Realice las pruebas de carga con `newman` que se realizaron en la parte 1 y haga un informe comparativo donde contraste: tiempos de respuesta, cantidad de peticiones respondidas con éxito, costos de las 2 infraestrucruras, es decir, la que desarrollamos con balanceo de carga horizontal y la que se hizo con una maquina virtual escalada.  
 
-3. Agregue una 4 maquina virtual y realice las pruebas de newman, pero esta vez no lance 2 peticiones en paralelo, sino que incrementelo a 4. Haga un informe donde presente el comportamiento de la CPU de las 4 VM y explique porque la tasa de éxito de las peticiones aumento con este estilo de escalabilidad.
+Prueba con newman:  
+
+![ScreenShot](images/answers/Punto2.png)
+
+Como se puede apreciar en la imagen, el tiempo de duración de la prueba fue considerablemente mayor al resultado visto  
+en la prueba hecha con la máquina virtual B2ms, viendo que esta última duro 2 minutos con 35.5 segundos y la prueba hecha con  
+escalamiento horizontal tuvo una duración de 3 minutos con 59 segundos, con un tiempo promedio de respuesta de 23.8  
+segundos, frente a los 15.5 segundos de tiempo promedio de respuesta de la máquina virtual B2ms. Aun así, se puede apreciar  
+que ninguna de las dos pruebas tuvo algún error a destacar.  
+
+3. Agregue una 4 maquina virtual y realice las pruebas de newman, pero esta vez no lance 2 peticiones en paralelo, sino que incrementelo a 4. Haga un informe donde presente el comportamiento de la CPU de las 4 VM y explique porque la tasa de éxito de las peticiones aumento con este estilo de escalabilidad.  
 
 ```
 newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10 &
@@ -291,16 +301,62 @@ newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALAN
 
 **Preguntas**
 
-* ¿Cuáles son los tipos de balanceadores de carga en Azure y en qué se diferencian?, ¿Qué es SKU, qué tipos hay y en qué se diferencian?, ¿Por qué el balanceador de carga necesita una IP pública?
-* ¿Cuál es el propósito del *Backend Pool*?
-* ¿Cuál es el propósito del *Health Probe*?
-* ¿Cuál es el propósito de la *Load Balancing Rule*? ¿Qué tipos de sesión persistente existen, por qué esto es importante y cómo puede afectar la escalabilidad del sistema?.
-* ¿Qué es una *Virtual Network*? ¿Qué es una *Subnet*? ¿Para qué sirven los *address space* y *address range*?
-* ¿Qué son las *Availability Zone* y por qué seleccionamos 3 diferentes zonas?. ¿Qué significa que una IP sea *zone-redundant*?
-* ¿Cuál es el propósito del *Network Security Group*?
-* Informe de newman 1 (Punto 2)
-* Presente el Diagrama de Despliegue de la solución.
+* ¿Cuáles son los tipos de balanceadores de carga en Azure y en qué se diferencian?, ¿Qué es SKU, qué tipos hay y en qué se diferencian?, ¿Por qué el balanceador de carga necesita una IP pública?  
+    **Balanceador de carga público:** Un balanceador de carga público tiene la función dar conexiones salientes a las maquinas  
+    virtuales, es decir, balancean la carga del tráfico de internet a las máquinas virtuales.  
+    **Balanceador de carga privado:** Es usado como una manera para balancear la carga interna del tráfico generado dentro de  
+    una máquina virtual.  
+    **SKU:** Significa Stock-keeping-unit, lo cual se refiere a una unidad que puede ser comprada junto con otros productos  
+    en Azure, también indica que este producto puede venir en diferentes formas.  
+    1. **Estandar:** Los SKU estándar pueden ser vendidos individualmente o como partes de colecciones o paquetes.  
+    2. **Componente:** Se refiere a las partes incluidas en colecciones y paquetes, no se venden por si solos.  
+    3. **Montaje/Assembly:** Es un producto que debe ser ensamblado antes de ser enviado al cliente final.  
+    4. **Paquete/Bundle:** Es un producto que incluye otros SKU's asociados y que no necesitan ser ensamblados antes del envió  al cliente final  
+    5.  **Coleccion:**  Una colección está asociada a algún producto de marketing, en este caso solo se venden las SKU asociadas  
+    6.  **Virtual:** Este tipo de SKU no requiere de una instalación física o de un almacenamiento en inventario, como por  
+    ejemplo, una suscripción a una revista.  
+    La razón por la cual un balanceador de carga requiere una IP publica, es porque en este caso el endpoint del servicio  
+    de calcular números fibonacci es ofrecido al internet, es decir a la red pública, con esta idea podemos concluir que  
+    el balanceador de carga de este laboratorio es uno de tipo público. Mediante esta única IP se va a manejar todo el  
+    trafico que tendrá que manejar cada una de las máquinas virtuales.    
 
+* ¿Cuál es el propósito del *Backend Pool*?  
+    Es un componente del balanceador de carga que define el grupo de recursos que serán usados para servir el trafico  
+    sí así lo define una regla de balanceo.  
+* ¿Cuál es el propósito del *Health Probe*?  
+    Un *"Health Probe"* cumple la función de sondear el estado de los recursos backend. Las respuestas del health probe  
+    pueden ser configuradas para determinar que instancia del backend recibirá un nuevo flujo de tráfico. Estas mismas  
+    se encargan de detectar fallas en el backend de la aplicación, mediante el uso de estos sondeos podemos incluso gestionar  
+    las cargas y el flujo de trabajo en un load balancer.  
+* ¿Cuál es el propósito de la *Load Balancing Rule*? ¿Qué tipos de sesión persistente existen, por qué esto es importante y cómo puede afectar la escalabilidad del sistema?.  
+    La **Load balancing rule**, es una regla que define la lógica en la que se distribuirá el tráfico entre las diferentes  
+    instancias del Backend Pool.  
+* ¿Qué es una *Virtual Network*? ¿Qué es una *Subnet*? ¿Para qué sirven los *address space* y *address range*?  
+    **Virtual Network:** También llamada VNet, cumple la función de proveer con una red a una máquina virtual, esta permite  
+    extender la red de área local al internet. De esta manera, la VNet permite que diferentes recursos de la infraestructura  
+    se comuniquen entre sí, entre el internet y entre las demás redes on-premise.  
+    **Subnet:** Actúa como un segmento de la *Virtual Network*, es un rango de direcciones IP en una VNet, de manera en que  
+    una VNet puede ser dividida en varias subnets, lo cual proporciona una mejor organización y más seguridad en la infraestructura.  
+    **Address Space:** El espacio de redes es todo el rango que una IP privada puede tomar en el rango dentro del contexto de  
+    una VNet, por ejemplo, si una máquina virtual es desplegada en una VNet con address space configurado de 10.0.0.0/16  
+    la máquina virtual podría asignársele la IP privada 10.0.0.4.  
+    **Address Range:** La configuración de address range determina cuantas direcciones existirán en un address space.  
+* ¿Qué son las *Availability Zone* y por qué seleccionamos 3 diferentes zonas?. ¿Qué significa que una IP sea *zone-redundant*?  
+    **Availability Zone:** Es una localización física única dentro de una región, cada una de estas zonas está compuesta de  
+    uno o más datacenters proveedores de servicios.  
+    La razón de porque se seleccionan 3 zonas distintas dentro de una zona de disponibilidad es para brindarle mas  
+    disponibilidad a la infraestructura, lo cual mejora el apartado de requerimientos no funcionales, esto se consigue  
+    ya que, si uno de los nodos llega a sufrir un daño o deja de estar disponible, el load balancer podrá seguir utilizando  
+    los recursos que si se encuentran funcionando correctamente.  
+    **Zone-redundant IP:** Una IP de tipo zone redundant hace que los flujos de entrada o salida sean atendidos por alguna  
+    de las zonas de disponibilidad en una región.  
 
+* ¿Cuál es el propósito del *Network Security Group*?  
+    **Network Security Group:** Es un mecanismo de seguridad en la red que filtra o permite el paso de tráfico de la red hasta  
+    las máquinas virtuales o recursos de Azure, esto mediante el uso de reglas de seguridad que determinan si se permite o se  
+    rechaza un tráfico de entrada o de salida a dichos recursos.  
+* Informe de newman 1 (Punto 2)  
 
+* Presente el Diagrama de Despliegue de la solución.  
 
+![](images/answers/diagrama_solucion.png)
